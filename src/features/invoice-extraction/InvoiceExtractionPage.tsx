@@ -1,6 +1,7 @@
 import { FileUpload } from "./components/FileUpload"
 import { ResultTabs } from "./components/Tabs"
 import { JsonBlock } from "./components/JsonBlock"
+import { ErrorAlert } from "./components/ErrorAlert"
 import { useInvoiceExtraction } from "./hooks/useInvoiceExtraction"
 
 export default function InvoiceExtractionPage() {
@@ -8,10 +9,12 @@ export default function InvoiceExtractionPage() {
     selectedFile,
     isProcessing,
     result,
+    error,
     activeTab,
     setActiveTab,
     onFileChange,
     extract,
+    clearError,
   } = useInvoiceExtraction()
 
   async function onExtractClick() {
@@ -22,7 +25,8 @@ export default function InvoiceExtractionPage() {
     try {
       await extract()
     } catch (e) {
-      alert((e as Error).message)
+      // Error is already handled in the hook and displayed via ErrorAlert
+      console.error('Erro na extração:', e)
     }
   }
 
@@ -40,6 +44,11 @@ export default function InvoiceExtractionPage() {
             onChange={onFileChange}
             fileName={selectedFile ? selectedFile.name : null}
           />
+          
+          {error && (
+            <ErrorAlert message={error} onClose={clearError} />
+          )}
+          
           <div className="mt-6">
             <button
               type="button"
@@ -57,9 +66,6 @@ export default function InvoiceExtractionPage() {
             <h2 id="resultados" className="text-lg font-semibold text-gray-800 mb-4">Dados Extraídos</h2>
             <ResultTabs activeTab={activeTab} onChange={setActiveTab} />
             <div className="mt-4">
-              {activeTab === "formatted" && (
-                <div className="text-gray-600 text-sm">Visualização formatada será exibida aqui futuramente.</div>
-              )}
               {activeTab === "json" && (
                 <JsonBlock json={result} />
               )}

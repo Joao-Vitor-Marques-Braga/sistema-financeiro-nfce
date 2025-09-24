@@ -15,13 +15,6 @@ export function ResultTabs({ activeTab, onChange }: Props) {
       <div className="flex gap-2 border-b border-gray-200">
         <button
           type="button"
-          className={`${tabBase} ${activeTab === "formatted" ? active : inactive}`}
-          onClick={() => onChange("formatted")}
-        >
-          Visualização Formatada
-        </button>
-        <button
-          type="button"
           className={`${tabBase} ${activeTab === "json" ? active : inactive}`}
           onClick={() => onChange("json")}
         >

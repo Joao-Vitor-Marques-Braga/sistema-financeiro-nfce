@@ -30,7 +30,7 @@ export function JsonBlock({ json }: Props) {
     <div>
       <div className="rounded-md overflow-hidden bg-gray-900">
         <pre ref={preRef} className="p-4 text-sm text-gray-100 overflow-auto max-h-96">
-<code>{JSON.stringify(json, null, 2)}</code>
+          <code>{JSON.stringify(json, null, 2)}</code>
         </pre>
       </div>
       <button
