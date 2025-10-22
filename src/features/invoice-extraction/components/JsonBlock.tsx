@@ -11,9 +11,7 @@ export function JsonBlock({ json }: Props) {
     const text = JSON.stringify(json, null, 2)
     try {
       await navigator.clipboard.writeText(text)
-      // Optional: could add a toast. Keeping minimal per requirements.
     } catch {
-      // Fallback: select text and copy
       if (preRef.current) {
         const range = document.createRange()
         range.selectNodeContents(preRef.current)

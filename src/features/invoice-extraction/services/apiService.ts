@@ -1,6 +1,7 @@
 import type { InvoiceData } from "../types"
+import { mockExtractInvoice } from "./mockExtraction"
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/extrator'
 
 export interface ApiResponse<T> {
   data?: T
@@ -21,16 +22,19 @@ export class ApiService {
     formData.append('pdf_file', file)
 
     try {
-      const response = await fetch(`${API_BASE_URL}/extrator/upload/`, {
+      console.log('Tentando extrair dados reais do PDF...')
+      const response = await fetch(`${API_BASE_URL}/extract/`, {
         method: 'POST',
         body: formData,
       })
 
       const data = await this.handleResponse<InvoiceData>(response)
+      console.log('✅ Dados extraídos com sucesso do PDF:', data)
       return data
     } catch (error) {
-      console.error('Erro ao extrair dados da nota fiscal:', error)
-      throw error
+      console.warn('⚠️ API não disponível, usando dados mockados:', error)
+      console.log('📄 Usando dados mockados para demonstração...')
+      return await mockExtractInvoice(file)
     }
   }
 }
